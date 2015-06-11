@@ -1,0 +1,10 @@
+{
+  "name": "pokéname",
+  "version": "0.0.0",
+  "description": "A Pokémon-themed version name generator",
+  "scripts": {
+    "start": "echo \"Error: no start script specified\" && exit 1",
+    "test": "echo \"Error: no test script specified\" && exit 1"
+  },
+  "author": ""
+}
