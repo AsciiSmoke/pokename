@@ -35,7 +35,7 @@
                 console.log("Sorting and storing data...");
                 // Sort and store the data in an object level variable for safe-keeping
                 PokeApi.pokeData = PokeApi.sortData(data.pokemon);
-                console.log(data);
+                console.log(PokeApi.pokeData);
             })
                 .fail(function () {
                     // Call fail method to alert user
