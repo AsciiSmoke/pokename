@@ -36,6 +36,10 @@
                 // Sort and store the data in an object level variable for safe-keeping
                 PokeApi.pokeData = PokeApi.sortData(data.pokemon);
                 console.log(PokeApi.pokeData);
+
+                var filteredData = PokeApi.filterData("c");
+
+                console.log(filteredData);
             })
                 .fail(function () {
                     // Call fail method to alert user
@@ -60,6 +64,13 @@
                     return 1;
                 }
                 return 0;
+            });
+        },
+
+        filterData: function (char) {
+            console.log("Finding Pokemon that start with '"+char+"' ...");
+            return PokeApi.pokeData.filter(function (poke) {
+                return poke.name.substr(0, 1).toLowerCase() == char;
             });
         }
 
