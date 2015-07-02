@@ -12,11 +12,11 @@ We’ve put together a little skeleton project to start you off, but offer no op
 - [x] Reads data from the Pokemon API
 - [ ] Displays table of previously generated version names
 - [x] Can remove generated version names
-- [-] Uses AngularJs, or Backbone JS frameworks
+- [ ] ~~Uses AngularJs, or Backbone JS frameworks~~
 
 ## Bonus Points
 
-- [-] Uses our preprocessor suite, CoffeeScript, Jade, and SASS(scss)
+- [ ] ~~Uses our preprocessor suite, CoffeeScript, Jade, and SASS(scss)~~
 - [x] Doesn’t use Bootstrap or similar
 - [ ] Stored names are persisted after page reload
 - [ ] Offers option to copy generated name to clipboard
