@@ -1,0 +1,62 @@
+html {
+  font-size: 62.5%; }
+  html body {
+    font-size: 1.4rem;
+    padding: 20px; }
+  html #AlphaLinks a {
+    float: left;
+    opacity: 1;
+    display: inline-block;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    margin: 3px;
+    cursor: pointer;
+    border: 1px solid #777;
+    border-radius: 5px;
+    color: #555;
+    font-weight: 300;
+    text-align: center;
+    background: #f9f9ff;
+    -webkit-box-shadow: inset 0 0 3px #77f, 0 5px 10px -3px RGBA(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 0 0 3px #77f, 0 5px 10px -3px RGBA(0, 0, 0, 0.2);
+    box-shadow: inset 0 0 3px #77f, 0 5px 10px -3px RGBA(0, 0, 0, 0.2);
+    transition: all 150ms ease-in-out; }
+    html #AlphaLinks a.highlight {
+      background: #fff9f9;
+      -webkit-box-shadow: inset 0 0 3px #f77, 0 5px 10px -2px RGBA(0, 0, 0, 0.2);
+      -moz-box-shadow: inset 0 0 3px #f77, 0 5px 10px -2px RGBA(0, 0, 0, 0.2);
+      box-shadow: inset 0 0 3px #f77, 0 5px 10px -2px RGBA(0, 0, 0, 0.2); }
+    html #AlphaLinks a:hover {
+      width: 56px;
+      height: 56px;
+      line-height: 56px;
+      margin: 0;
+      color: #777;
+      font-weight: 900;
+      background: #fff;
+      -webkit-box-shadow: inset 0 0 5px #00e, 0 4px 10px -2px RGBA(0, 0, 0, 0.1);
+      -moz-box-shadow: inset 0 0 5px #00e, 0 4px 10px -2px RGBA(0, 0, 0, 0.1);
+      box-shadow: inset 0 0 5px #00e, 0 4px 10px -2px RGBA(0, 0, 0, 0.1); }
+    html #AlphaLinks a.disabled {
+      opacity: 0.2; }
+      html #AlphaLinks a.disabled:hover {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        margin: 3px;
+        color: #555;
+        font-weight: 300;
+        background: #f9f9ff;
+        -webkit-box-shadow: inset 0 0 3px #77f, 0 5px 10px -2px RGBA(0, 0, 0, 0.2);
+        -moz-box-shadow: inset 0 0 3px #77f, 0 5px 10px -2px RGBA(0, 0, 0, 0.2);
+        box-shadow: inset 0 0 3px #77f, 0 5px 10px -2px RGBA(0, 0, 0, 0.2); }
+    html #AlphaLinks a:nth-of-type(3n+1) {
+      clear: left; }
+
+/*# sourceMappingURL=styles.css.map */
