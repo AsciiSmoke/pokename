@@ -8,16 +8,16 @@ We’ve put together a little skeleton project to start you off, but offer no op
 
 ## Requirements
 
-- [ ] Generates unique version names
+- [x] Generates unique version names
 - [x] Reads data from the Pokemon API
 - [ ] Displays table of previously generated version names
-- [ ] Can remove generated version names
-- [ ] Uses AngularJs, or Backbone JS frameworks
+- [x] Can remove generated version names
+- [-] Uses AngularJs, or Backbone JS frameworks
 
 ## Bonus Points
 
-- [ ] Uses our preprocessor suite, CoffeeScript, Jade, and SASS(scss)
-- [ ] Doesn’t use Bootstrap or similar
+- [-] Uses our preprocessor suite, CoffeeScript, Jade, and SASS(scss)
+- [x] Doesn’t use Bootstrap or similar
 - [ ] Stored names are persisted after page reload
 - [ ] Offers option to copy generated name to clipboard
 - [ ] A runnable unit test suite

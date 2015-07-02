@@ -159,8 +159,8 @@ window.loggingLevel = loggingLevels.OutputOnly;
             //        alert("Verbs file is missing or corrupted");
             //    });
 
-            // WebStore web server wont serve json file, have included (below) for now
-            // TODO: find another way to serve json from local file system without 404
+            // WebStorm web server can't serve json file, have included (below) for now
+            // TODO: find another way to serve json from local file system
             PokeApi.verbFileJson = verbsFileContents;
             PokeApi.failedToLoadJson = false;
         },
