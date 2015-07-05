@@ -1,12 +1,28 @@
 html {
   font-size: 62.5%; // Equivalent of 10px
 
+  * {
+    box-sizing: border-box;
+  }
+
   body {
     font-size: 1.4rem; // Equates to 14px on most devices
     padding: 20px;
+    perspective: 9999px;
+    perspective-origin: bottom;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 
   #AlphaLinks {
+    display: inline-block;
+    position: absolute;
+    top: 90px;
+    left: 18px;
+
     a {
       float: left;
       opacity: 1;
@@ -34,7 +50,6 @@ html {
       -webkit-box-shadow: inset 0 0 3px #77f, 0 5px 10px -3px RGBA(0, 0, 0, 0.2);
       -moz-box-shadow: inset 0 0 3px #77f, 0 5px 10px -3px RGBA(0, 0, 0, 0.2);
       box-shadow: inset 0 0 3px #77f, 0 5px 10px -3px RGBA(0, 0, 0, 0.2);
-
 
       transition: all 150ms ease-in-out;
 
@@ -80,6 +95,65 @@ html {
 
       &:nth-of-type(3n+1) {
         clear: left;
+      }
+    }
+  }
+
+  #Board {
+    display: inline-block;
+    position: absolute;
+    top: 90px;
+    left: 230px;
+    right: 90px;
+    bottom: 30px;
+    border-radius: 20px;
+    border: 4px #bbb inset;
+    background: linear-gradient(#ccaa88, #aa9977);
+    transform-style: preserve-3d;
+    transform-origin: top;
+    transform: rotateX(30deg);
+    box-shadow: inset 0 0 60px #885, 0 15px 40px -3px RGBA(0, 0, 10, 0.5);
+
+    .card {
+      position: relative;
+      margin: 30px;
+      display: inline-block;
+      width: 200px;
+      height: 350px;
+      border-radius: 10px;
+      border: 2px solid #776655;
+      background: linear-gradient(#ffeedd, #eeddcc);
+      padding: 5px;
+      box-shadow: inset 0 0 18px #fff, 0 4px 2px -2px RGBA(0, 0, 0, 0.5);
+
+      .name-plate {
+        transform: rotate(90deg) translateX(10px) translateY(-23px);
+        transform-origin: left top 0;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      .sprite {
+        width: 100px;
+        height: 180px;
+        background: white;
+        position: absolute;
+        margin-top: -30px;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+      }
+
+      .details {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        border-top: 1px solid #dbb;
+        background: RGBA(255, 255, 255, 0.5);
+        padding: 15px;
+        text-align: center;
       }
     }
   }
