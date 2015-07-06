@@ -1,6 +1,8 @@
 /**
  * Created by Craig on 02/07/2015.
  */
+
+var pokemonLoaded = 0;
 $(function () {
     $("#AlphaLinks").find("a").click(function () {
 
@@ -34,7 +36,7 @@ $(function () {
         // If we got past the error checking, then proceed with selecting a Pokemon
         var newPokemon = PokeApi.getNewPokemon(char);
 
-        if (newPokemon == null){
+        if (newPokemon == null) {
             alert("Sorry, there are no more Pokemon beginning with " + char);
             $that.addClass("disabled").off("click");
 
@@ -43,7 +45,15 @@ $(function () {
             return false;
         }
 
-        alert(newPokemon.adjective + " " + newPokemon.verb + " " + newPokemon.name);
+        var $card = $("#Board").find("article:eq(" + pokemonLoaded + ")").addClass("visible");
+        $card.find(".name-plate").text(newPokemon.name);
+        $card.find(".details").text(newPokemon.adjective + " " + newPokemon.verb + " " + newPokemon.name);
+
+
+        pokemonLoaded++;
+        if (pokemonLoaded == 5) {
+            $("#AlphaLinks").find("A").addClass("disabled").off("click");
+        }
 
     });
 

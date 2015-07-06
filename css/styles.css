@@ -1,51 +1,157 @@
-/*
-Error: Invalid CSS after "...css/styles.scss": expected "{", was "}"
-        on line 102 of styles.scss
+html {
+  font-size: 62.5%; }
+  html * {
+    box-sizing: border-box; }
+  html body {
+    font-size: 1.4rem;
+    padding: 20px;
+    perspective: 800px;
+    perspective-origin: 50% 50%;
+    position: absolute;
+    width: 1600px;
+    height: 700px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); }
+  html H1 {
+    position: absolute;
+    top: 0; }
+  html #AlphaLinks {
+    display: inline-block;
+    position: absolute;
+    top: 70px;
+    left: 18px;
+    transform: rotate3d(0, 1, -0.3, 11deg) skewX(-3deg);
+    transform-origin: top left; }
+    html #AlphaLinks a {
+      float: left;
+      opacity: 1;
+      display: inline-block;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      margin: 3px;
+      cursor: pointer;
+      border: 1px solid #777;
+      border-radius: 5px;
+      color: #555;
+      font-weight: 300;
+      text-align: center;
+      background: #f9f9ff;
+      box-shadow: inset 0 0 3px #77f, -5px 5px 10px -3px RGBA(0, 0, 0, 0.2);
+      transition: all 150ms ease-in-out; }
+      html #AlphaLinks a.highlight {
+        background: #fff9f9;
+        box-shadow: inset 0 0 3px #f77, -5px 5px 10px -2px RGBA(0, 0, 0, 0.2); }
+      html #AlphaLinks a:hover {
+        width: 56px;
+        height: 56px;
+        line-height: 56px;
+        margin: 0;
+        color: #777;
+        font-weight: 900;
+        background: #fff;
+        -webkit-box-shadow: inset 0 0 5px #00e, 0 4px 10px -2px RGBA(0, 0, 0, 0.1);
+        -moz-box-shadow: inset 0 0 5px #00e, 0 4px 10px -2px RGBA(0, 0, 0, 0.1);
+        box-shadow: inset 0 0 5px #00e, 0 4px 10px -2px RGBA(0, 0, 0, 0.1); }
+      html #AlphaLinks a.disabled {
+        opacity: 0.2; }
+        html #AlphaLinks a.disabled:hover {
+          width: 50px;
+          height: 50px;
+          line-height: 50px;
+          margin: 3px;
+          color: #555;
+          font-weight: 300;
+          background: #f9f9ff;
+          -webkit-box-shadow: inset 0 0 4px #55f, 0 5px 10px -3px RGBA(0, 0, 0, 0.3);
+          -moz-box-shadow: inset 0 0 4px #55f, 0 5px 10px -3px RGBA(0, 0, 0, 0.3);
+          box-shadow: inset 0 0 4px #55f, 0 5px 10px -3px RGBA(0, 0, 0, 0.3); }
+      html #AlphaLinks a:nth-of-type(3n+1) {
+        clear: left; }
+  html #Board {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 360px;
+    width: 1000px;
+    height: 600px;
+    border-radius: 20px;
+    border: 4px solid #bbb;
+    border-bottom-color: #aaa;
+    border-left-color: #999;
+    background: linear-gradient(#f9f9f0, #e9e9e3, #d8d8d5);
+    transform-style: preserve-3d;
+    transform-origin: top;
+    transform: rotate3d(1, 0, 0, 15deg);
+    box-shadow: inset 0 0 60px #885, 0 15px 40px -3px RGBA(0, 0, 10, 0.5); }
+    html #Board .card {
+      opacity: 0;
+      display: inline-block;
+      position: relative;
+      width: 230px;
+      height: 300px;
+      border-radius: 10px;
+      border: 2px solid #776655;
+      background: linear-gradient(#fff7dd, #f2e7cc);
+      padding: 5px;
+      left: 50%;
+      top: 50%;
+      margin-left: -125px;
+      margin-top: -175px;
+      zoom: 0.95;
+      transition: all 200ms ease-in; }
+      html #Board .card.visible {
+        zoom: 1;
+        opacity: 1; }
+      html #Board .card:nth-of-type(1) {
+        transform: translateX(-325px) translateZ(20px) rotate3d(0.9, -0.1, 1, -9deg);
+        box-shadow: inset 0 0 18px #fff, -3px 4px 2px -2px RGBA(0, 0, 70, 0.5); }
+      html #Board .card:nth-of-type(2) {
+        transform: translateX(-275px) translateY(-10px) translateZ(30px) rotate3d(0.9, -0.1, 0.5, -9deg);
+        box-shadow: inset 0 0 18px #fff, -3px 4.5px 3px -2px RGBA(0, 0, 70, 0.5); }
+      html #Board .card:nth-of-type(3) {
+        transform: translateX(-225px) translateY(-14px) translateZ(30px) rotate3d(1, 0, -0.1, -9deg);
+        box-shadow: inset 0 0 18px #fff, -3px 5px 5px -2px RGBA(0, 0, 70, 0.5); }
+      html #Board .card:nth-of-type(4) {
+        transform: translateX(-175px) translateY(0px) translateZ(50px) rotate3d(0.5, -0.1, -0.5, -9deg);
+        box-shadow: inset 0 0 18px #fff, -3px 5.5px 7px -2px RGBA(0, 0, 70, 0.5); }
+      html #Board .card:nth-of-type(5) {
+        transform: translateX(-125px) translateY(25px) translateZ(60px) rotate3d(0.9, -0.1, -3, -10deg);
+        box-shadow: inset 0 0 18px #fff, -3px 6px 9px -2px RGBA(0, 0, 70, 0.5); }
+      html #Board .card:hover {
+        transition: all 600ms ease-in-out;
+        transform: translateX(-225px) translateY(100px) translateZ(230px) rotate3d(1, 0, 0, -15deg) !important; }
+      html #Board .card .name-plate {
+        transform: rotate(90deg) translateX(10px) translateY(-23px);
+        transform-origin: left top 0;
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-weight: bold; }
+      html #Board .card .sprite {
+        width: 100px;
+        height: 180px;
+        background: white;
+        border: 1px solid #ddd;
+        position: absolute;
+        margin-top: -30px;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%); }
+      html #Board .card .details {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        border-top: 1px solid #dbb;
+        background: RGBA(255, 255, 255, 0.5);
+        padding: 15px;
+        text-align: center; }
 
-97:         clear: left;
-98:       }
-99:     }
-100:   }
-101: <<<<<<< Updated upstream:css/styles.scss
-102: }
-103: =======
-104: 
-105:   #Board {
-106:     display: inline-block;
-107:     position: absolute;
-
-Backtrace:
-styles.scss:102
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/scss/parser.rb:1162:in `expected'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/scss/parser.rb:1098:in `expected'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/scss/parser.rb:1093:in `tok!'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/scss/parser.rb:638:in `block'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/scss/parser.rb:708:in `declaration_or_ruleset'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/scss/parser.rb:658:in `block_child'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/scss/parser.rb:650:in `block_contents'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/scss/parser.rb:639:in `block'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/scss/parser.rb:632:in `ruleset'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/scss/parser.rb:657:in `block_child'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/scss/parser.rb:647:in `block_contents'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/scss/parser.rb:117:in `stylesheet'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/scss/parser.rb:42:in `parse'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/engine.rb:403:in `_to_tree'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/engine.rb:378:in `_render_with_sourcemap'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/engine.rb:295:in `render_with_sourcemap'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/plugin/compiler.rb:490:in `update_stylesheet'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/plugin/compiler.rb:209:in `each'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/plugin.rb:82:in `update_stylesheets'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/exec/sass_scss.rb:364:in `watch_or_update'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/exec/sass_scss.rb:51:in `process_result'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/exec/base.rb:52:in `parse'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/lib/sass/exec/base.rb:19:in `parse!'
-C:/Ruby22-x64/lib/ruby/gems/2.2.0/gems/sass-3.4.15/bin/scss:13:in `<top (required)>'
-C:/Ruby22-x64/bin/scss:23:in `load'
-C:/Ruby22-x64/bin/scss:23:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Invalid CSS after \"...css/styles.scss\": expected \"{\", was \"}\"\A         on line 102 of styles.scss\A \A 97:         clear: left;\A 98:       }\A 99:     }\A 100:   }\A 101: <<<<<<< Updated upstream:css/styles.scss\A 102: }\A 103: =======\A 104: \A 105:   #Board {\A 106:     display: inline-block;\A 107:     position: absolute;"; }
+/*# sourceMappingURL=styles.css.map */
