@@ -4,58 +4,78 @@
 
 var pokemonLoaded = 0;
 $(function () {
-    $("#AlphaLinks").find("a").click(function () {
 
-        if (window.PokeApi == undefined) {
-            alert("Sorry, an error has occurred, please refresh your page and try again.");
-            return false;
-        }
+    // Store links in var to save re-selecting them later
+    var $alphaLinks = $("#AlphaLinks").find("A");
 
-        if (window.PokeApi.failedToLoadData == false && window.PokeApi.pokeData.length == 0) {
-            alert("Sorry, I haven't finished loading the data, please wait...");
-            return false;
-        }
+    // Disable the buttons until the api is ready
+    $alphaLinks.addClass("disabled");
 
-        // Take a copy of the pointer to 'this' before the scope changes
-        var $that = $(this);
-        var char = $that.attr("data-char");
+    // Listen for the api to be ready
+    if (PokeApi && PokeApi.ready !== undefined) {
+        $(document).bind("PokeApi.ready", function () {
+            bindLinks();
+        });
+    }
 
-        // If the clicked button has a char that is a letter, proceed with that letter
-        if (char.match(/^[a-z]+$/)) {
-            ToggleHighlight($that);
-        } else {
+    function bindLinks() {
 
-            // Otherwise, select a letter at random.
-            var randomNum = Math.round(Math.random() * (26 - 1));
-            $("#AlphaLinks").find("a")[randomNum].click();
+        // Bind the click event for the buttons
+        $("#AlphaLinks").find("a").click(function () {
 
-            // Prevent further processing (pass processing to the newly 'clicked' button
-            return false;
-        }
+            if (window.PokeApi == undefined) {
+                alert("Sorry, an error has occurred, please refresh your page and try again.");
+                return false;
+            }
 
-        // If we got past the error checking, then proceed with selecting a Pokemon
-        var newPokemon = PokeApi.getNewPokemon(char);
+            if (window.PokeApi.failedToLoadData == false && window.PokeApi.pokeData.length == 0) {
+                alert("Sorry, I haven't finished loading the data, please wait...");
+                return false;
+            }
 
-        if (newPokemon == null) {
-            alert("Sorry, there are no more Pokemon beginning with " + char);
-            $that.addClass("disabled").off("click");
+            // Take a copy of the pointer to 'this' before the scope changes
+            var $that = $(this);
+            var char = $that.attr("data-char");
 
-            // TODO: find a way to preventatively disable the link when all the Pokemon
-            // beginning with [char] have been shown rather than wait for it to be clicked
-            return false;
-        }
+            // If the clicked button has a char that is a letter, proceed with that letter
+            if (char.match(/^[a-z]+$/)) {
+                ToggleHighlight($that);
+            } else {
 
-        var $card = $("#Board").find("article:eq(" + pokemonLoaded + ")").addClass("visible");
-        $card.find(".name-plate").text(newPokemon.name);
-        $card.find(".details").text(newPokemon.adjective + " " + newPokemon.verb + " " + newPokemon.name);
+                // Otherwise, select a letter at random.
+                var randomNum = Math.round(Math.random() * (26 - 1));
+                $("#AlphaLinks").find("a")[randomNum].click();
+
+                // Prevent further processing (pass processing to the newly 'clicked' button
+                return false;
+            }
+
+            // If we got past the error checking, then proceed with selecting a Pokemon
+            var newPokemon = PokeApi.getNewPokemon(char);
+
+            if (newPokemon == null) {
+                alert("Sorry, there are no more Pokemon beginning with " + char);
+                $that.addClass("disabled").off("click");
+
+                // TODO: find a way to disable the link when all the Pokemon beginning with [char] have been shown rather than wait for it to be clicked again
+                return false;
+            }
+
+            var $card = $("#Board").find("article:eq(" + pokemonLoaded + ")").addClass("visible");
+            $card.find(".name-plate").text(newPokemon.name);
+            $card.find(".details").text(newPokemon.adjective + " " + newPokemon.verb + " " + newPokemon.name);
 
 
-        pokemonLoaded++;
-        if (pokemonLoaded == 5) {
-            $("#AlphaLinks").find("A").addClass("disabled").off("click");
-        }
+            pokemonLoaded++;
+            if (pokemonLoaded == 5) {
+                $alphaLinks.addClass("disabled").off("click");
+            }
 
-    });
+        });
+
+        // Enable the buttons
+        $alphaLinks.removeClass("disabled");
+    }
 
     // Handle the visual representation of selecting a link
     function ToggleHighlight(which) {

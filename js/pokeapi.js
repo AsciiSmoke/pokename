@@ -9,13 +9,13 @@ var loggingLevels = {
     Verbose: 2
 };
 
-function LogToConsole(message, level){
-    if (window.loggingLevel >= level){
+function LogToConsole(message, level) {
+    if (window.loggingLevel >= level) {
         console.log(message);
     }
 }
 
-String.prototype.capFirst = function() {
+String.prototype.capFirst = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 // End of helpers
@@ -43,7 +43,15 @@ window.loggingLevel = loggingLevels.OutputOnly;
             if (PokeApi.pokeData.length == 0) {
                 LogToConsole("Initiallising...", loggingLevels.Verbose);
                 PokeApi.getAllData();
+
+                $(document).on("PokeApi.ready", function () {
+                    PokeApi.ready();
+                });
             }
+        },
+
+        ready: function (e) {
+            // placeholder for event binding
         },
 
         getAllData: function () {
@@ -71,17 +79,20 @@ window.loggingLevel = loggingLevels.OutputOnly;
                         PokeApi.failedToLoadData = false;
 
                         // Test getNewPokemon
-                        for (var ii = 0; ii <= 100; ii++) {
-                            var newPokemon = PokeApi.getNewPokemon("c");
-                            if (newPokemon) {
-                                LogToConsole(newPokemon.verb + " " + newPokemon.adjective + " " + newPokemon.name, loggingLevels.OutputOnly);
-                            } else {
-                                break;
-                            }
-                        }
+                        //for (var ii = 0; ii <= 100; ii++) {
+                        //    var newPokemon = PokeApi.getNewPokemon("c");
+                        //    if (newPokemon) {
+                        //        LogToConsole(newPokemon.verb + " " + newPokemon.adjective + " " + newPokemon.name, loggingLevels.OutputOnly);
+                        //    } else {
+                        //        break;
+                        //    }
+                        //}
                     }
                 })
                 .always(function () {
+
+                    // Broadcast that the api is ready
+                    $(document).trigger("PokeApi.ready");
                 });
         },
 
