@@ -1,21 +1,80 @@
+@font-face {
+  font-family: 'Pretendo';
+  src: url("Pretendo.ttf"); }
 html {
   font-size: 62.5%; }
   html * {
     box-sizing: border-box; }
   html body {
+    font-family: verdana, sans-serif;
     font-size: 1.4rem;
     padding: 20px;
-    perspective: 800px;
-    perspective-origin: 50% 50%;
-    position: absolute;
-    width: 1600px;
-    height: 700px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%); }
-  html H1 {
-    position: absolute;
-    top: 0; }
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0; }
+    html body H1 {
+      position: absolute;
+      top: 0; }
+    html body button {
+      font-family: 'Pretendo', sans-serif;
+      border-radius: 100px;
+      border: 3px solid #d00;
+      color: #d00;
+      background: white;
+      padding: 2px 10px;
+      box-shadow: 0 7px 10px -5px #77f;
+      font-size: 20px;
+      margin-bottom: 4px;
+      height: 35px; }
+      html body button span {
+        font-family: verdana, sans-serif; }
+      html body button.disabled {
+        opacity: 0.9; }
+      html body button.ready:hover, html body button.ready:active {
+        background: linear-gradient(#fff, #fcc); }
+      html body button.ready:active {
+        margin-bottom: 0;
+        margin-top: 4px;
+        box-shadow: 0 3px 10px -5px #77f; }
+    html body p {
+      margin-bottom: -5px; }
+    html body main {
+      position: fixed;
+      width: 1600px;
+      height: 700px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      perspective: 800px;
+      perspective-origin: 50% 50%;
+      z-index: 1; }
+  html #MessageWindow .message-window-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: RGBA(255, 255, 255, 0.95);
+    box-shadow: inset 0 -10px 300px #556;
+    z-index: 90; }
+  html #MessageWindow .message-window-container {
+    z-index: 91; }
+    html #MessageWindow .message-window-container .message-window {
+      position: fixed;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(#f9f9f0, #e9e9e3, #d8d8d5);
+      border: 5px inset #77c;
+      border-radius: 50px;
+      box-shadow: 0 10px 10px -5px #333;
+      z-index: 92;
+      padding: 20px 50px; }
+      html #MessageWindow .message-window-container .message-window .message-text {
+        margin-bottom: 40px; }
   html #AlphaLinks {
     display: inline-block;
     position: absolute;
@@ -47,7 +106,7 @@ html {
       transition: all 150ms ease-in-out; }
       html #AlphaLinks a.highlight {
         background: #fff9f9;
-        box-shadow: inset 0 0 3px #f77, -5px 5px 10px -2px RGBA(0, 0, 0, 0.2); }
+        box-shadow: inset 0 0 3px #f00, -5px 5px 10px -2px RGBA(0, 0, 0, 0.2); }
       html #AlphaLinks a:hover {
         width: 56px;
         height: 56px;
@@ -89,7 +148,8 @@ html {
     transform-style: preserve-3d;
     transform-origin: top;
     transform: rotate3d(1, 0, 0, 15deg);
-    box-shadow: inset 0 0 60px #885, 0 15px 40px -3px RGBA(0, 0, 10, 0.5); }
+    box-shadow: inset 0 0 60px #885, 0 15px 40px -3px RGBA(0, 0, 10, 0.5);
+    z-index: 10; }
     html #Board .card {
       opacity: 0;
       display: inline-block;
@@ -111,22 +171,28 @@ html {
         opacity: 1; }
       html #Board .card:nth-of-type(1) {
         transform: translateX(-325px) translateZ(20px) rotate3d(0.9, -0.1, 1, -9deg);
-        box-shadow: inset 0 0 18px #fff, -3px 4px 2px -2px RGBA(0, 0, 70, 0.5); }
+        box-shadow: inset 0 0 18px #fff, -3px 4px 2px -2px RGBA(0, 0, 70, 0.5);
+        z-index: 11; }
       html #Board .card:nth-of-type(2) {
         transform: translateX(-275px) translateY(-10px) translateZ(30px) rotate3d(0.9, -0.1, 0.5, -9deg);
-        box-shadow: inset 0 0 18px #fff, -3px 4.5px 3px -2px RGBA(0, 0, 70, 0.5); }
+        box-shadow: inset 0 0 18px #fff, -3px 4.5px 3px -2px RGBA(0, 0, 70, 0.5);
+        z-index: 12; }
       html #Board .card:nth-of-type(3) {
         transform: translateX(-225px) translateY(-14px) translateZ(30px) rotate3d(1, 0, -0.1, -9deg);
-        box-shadow: inset 0 0 18px #fff, -3px 5px 5px -2px RGBA(0, 0, 70, 0.5); }
+        box-shadow: inset 0 0 18px #fff, -3px 5px 5px -2px RGBA(0, 0, 70, 0.5);
+        z-index: 13; }
       html #Board .card:nth-of-type(4) {
         transform: translateX(-175px) translateY(0px) translateZ(50px) rotate3d(0.5, -0.1, -0.5, -9deg);
-        box-shadow: inset 0 0 18px #fff, -3px 5.5px 7px -2px RGBA(0, 0, 70, 0.5); }
+        box-shadow: inset 0 0 18px #fff, -3px 5.5px 7px -2px RGBA(0, 0, 70, 0.5);
+        z-index: 14; }
       html #Board .card:nth-of-type(5) {
         transform: translateX(-125px) translateY(25px) translateZ(60px) rotate3d(0.9, -0.1, -3, -10deg);
-        box-shadow: inset 0 0 18px #fff, -3px 6px 9px -2px RGBA(0, 0, 70, 0.5); }
+        box-shadow: inset 0 0 18px #fff, -3px 6px 9px -2px RGBA(0, 0, 70, 0.5);
+        z-index: 15; }
       html #Board .card:hover {
         transition: all 600ms ease-in-out;
-        transform: translateX(-225px) translateY(100px) translateZ(230px) rotate3d(1, 0, 0, -15deg) !important; }
+        transform: translateX(-225px) translateY(100px) translateZ(230px) rotate3d(1, 0, 0, -15deg) !important;
+        z-index: 20; }
       html #Board .card .name-plate {
         transform: rotate(90deg) translateX(10px) translateY(-23px);
         transform-origin: left top 0;
@@ -152,6 +218,7 @@ html {
         border-top: 1px solid #dbb;
         background: RGBA(255, 255, 255, 0.5);
         padding: 15px;
-        text-align: center; }
+        text-align: center;
+        border-radius: 0 0 10px 10px; }
 
 /*# sourceMappingURL=styles.css.map */

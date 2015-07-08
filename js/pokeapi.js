@@ -31,7 +31,8 @@ window.loggingLevel = loggingLevels.OutputOnly;
     // Use extend to attach plugin code to window.PokeApi via local variable PokeApi
     $.extend(PokeApi, {
 
-        apiUrl: "http://pokeapi.co/api/v1/pokedex/1/",
+        apiUrl: "http://pokeapi.co/",
+        pokeDexUri: "api/v1/pokedex/1/",
         failedToLoadData: false,
         failedToLoadJson: false,
         pokeData: [],
@@ -56,7 +57,7 @@ window.loggingLevel = loggingLevels.OutputOnly;
 
         getAllData: function () {
             LogToConsole("Fetching data...", loggingLevels.Verbose);
-            $.get(PokeApi.apiUrl, function (data) {
+            $.get(PokeApi.apiUrl + PokeApi.pokeDexUri, function (data) {
 
                 // Check we actually got something usable
                 LogToConsole("Verifying data...", loggingLevels.Verbose);
@@ -154,6 +155,45 @@ window.loggingLevel = loggingLevels.OutputOnly;
             }
         },
 
+        getDetails: function (pokemon, complete) {
+
+            LogToConsole("Retrieving pokemon details...", loggingLevels.Verbose);
+
+            if (!pokemon.resource_uri) {
+                LogToConsole("Invalid pokemon object supplied", loggingLevels.Verbose);
+                return false;
+            }
+
+            $.get(PokeApi.apiUrl + pokemon.resource_uri, function (data) {
+
+                var callbacks =$.Callbacks();
+                callbacks.add(complete);
+
+                // Check we actually got something usable
+                LogToConsole("Verifying data...", loggingLevels.Verbose);
+                if (data.abilities == undefined || data.abilities.length <= 0) {
+                    // Call fail method to alert user
+                    PokeApi.ajaxFailed();
+                }
+
+                // TODO: Work out why data isn't received in the 'complete' method
+                callbacks.fireWith(window, data);
+            })
+                .fail(function () {
+                    // Call fail method to alert user
+                    PokeApi.ajaxFailed();
+                })
+                .done(function () {
+                    // Reset failedToLoadData flag in case it had previously failed
+                    if (PokeApi.pokeData != undefined) {
+                        PokeApi.failedToLoadData = false;
+                    }
+                });
+
+            // In case anything has failed, return false
+            return false;
+        },
+
         loadVerbFile: function () {
 
             //$.getJSON( "verbs.json", function(json) {
@@ -170,7 +210,7 @@ window.loggingLevel = loggingLevels.OutputOnly;
             //        alert("Verbs file is missing or corrupted");
             //    });
 
-            // WebStorm web server can't serve json file, have included (below) for now
+            // WebStorm development web server won't serve json file, have included below instead
             // TODO: find another way to serve json from local file system
             PokeApi.verbFileJson = verbsFileContents;
             PokeApi.failedToLoadJson = false;

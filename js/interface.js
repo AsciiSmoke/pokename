@@ -7,6 +7,7 @@ $(function () {
 
     // Store links in var to save re-selecting them later
     var $alphaLinks = $("#AlphaLinks").find("A");
+    var $continueButton = $("#MessageWindow").find("Button.message-button");
 
     // Disable the buttons until the api is ready
     $alphaLinks.addClass("disabled");
@@ -14,13 +15,23 @@ $(function () {
     // Listen for the api to be ready
     if (PokeApi && PokeApi.ready !== undefined) {
         $(document).bind("PokeApi.ready", function () {
-            bindLinks();
+
+            // Only enable the buttons if bindLinks() returns true
+            if (bindLinks()) {
+                $alphaLinks.removeClass("disabled");
+                $continueButton.removeClass("disabled").addClass("ready").fadeOut(200, function () {
+                    $(this).text("Continue").click(function () {
+                        $("#MessageWindow").hide();
+                    });
+                }).fadeIn(200);
+            }
+
         });
     }
 
+    // Bind the click event for the buttons
     function bindLinks() {
 
-        // Bind the click event for the buttons
         $("#AlphaLinks").find("a").click(function () {
 
             if (window.PokeApi == undefined) {
@@ -61,10 +72,13 @@ $(function () {
                 return false;
             }
 
-            var $card = $("#Board").find("article:eq(" + pokemonLoaded + ")").addClass("visible");
-            $card.find(".name-plate").text(newPokemon.name);
-            $card.find(".details").text(newPokemon.adjective + " " + newPokemon.verb + " " + newPokemon.name);
-
+            PokeApi.getDetails(newPokemon, function (pokemonData) {
+                var $card = $("#Board").find("article:eq(" + pokemonLoaded + ")").addClass("visible");
+                $card.find(".name-plate").text(newPokemon.name);
+                $card.find(".details").text(
+                    newPokemon.adjective + " " + newPokemon.verb + " " + newPokemon.name + " [" + pokemonData.weight + "]"
+                );
+            });
 
             pokemonLoaded++;
             if (pokemonLoaded == 5) {
@@ -73,8 +87,7 @@ $(function () {
 
         });
 
-        // Enable the buttons
-        $alphaLinks.removeClass("disabled");
+        return true;
     }
 
     // Handle the visual representation of selecting a link
