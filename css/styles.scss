@@ -4,6 +4,30 @@
 }
 
 html {
+
+  // Super-simple responsive adjusments
+  @media screen and (max-width: 480px) {
+    zoom: 0.275;
+
+    #MessageWindow .message-window-container {
+      font-size: 3em;
+    }
+  }
+  @media screen and (min-width: 481px) and (max-width: 800px) {
+    zoom: 0.45;
+
+    #MessageWindow .message-window-container {
+      //zoom: 1.5;
+    }
+  }
+  @media screen and (min-width: 801px) and (max-width: 1024px) {
+    zoom: 0.575;
+
+    #MessageWindow .message-window-container {
+      //zoom: 2;
+    }
+  }
+
   font-size: 62.5%; // Equivalent of 10px
 
   * {
@@ -32,11 +56,10 @@ html {
       border: 3px solid #d00;
       color: #d00;
       background: white;
-      padding: 2px 10px;
+      padding: 6px 20px;
       box-shadow: 0 7px 10px -5px #77f;
-      font-size: 20px;
+      font-size: 1.3em;
       margin-bottom: 4px;
-      height: 35px;
 
       span {
         font-family: verdana, sans-serif;
