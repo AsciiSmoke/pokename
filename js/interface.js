@@ -2,8 +2,13 @@
  * Created by Craig on 02/07/2015.
  */
 
-var pokemonLoaded = 0;
 $(function () {
+
+    // Create 4 additional card elements from the template
+    var $cardTemplate = $("article[data-name='template']");
+    for (var i = 0; i < 4; i++) {
+        $cardTemplate.clone(true).insertAfter($cardTemplate);
+    }
 
     // Store links in var to save re-selecting them later
     var $alphaLinks = $("#AlphaLinks").find("A");
@@ -31,6 +36,8 @@ $(function () {
 
     // Bind the click event for the buttons
     function bindLinks() {
+
+        var pokemonLoaded = 0;
 
         $("#AlphaLinks").find("a").click(function () {
 
@@ -72,18 +79,22 @@ $(function () {
                 return false;
             }
 
-            PokeApi.getDetails(newPokemon, function (pokemonData) {
+            PokeApi.getDetails(newPokemon, function () {
                 var $card = $("#Board").find("article:eq(" + pokemonLoaded + ")").addClass("visible");
                 $card.find(".name-plate").text(newPokemon.name);
-                $card.find(".details").text(
-                    newPokemon.adjective + " " + newPokemon.verb + " " + newPokemon.name + " [" + pokemonData.weight + "]"
-                );
-            });
+                $card.find(".sprite img").attr("src", newPokemon.sprite);
+                $card.find(".details dd[data-field='height']").text(newPokemon.height);
+                $card.find(".details dd[data-field='weight']").text(newPokemon.weight);
+                $card.find(".details dd[data-field='attack']").text(newPokemon.attack);
+                $card.find(".details dd[data-field='defense']").text(newPokemon.defense);
 
-            pokemonLoaded++;
-            if (pokemonLoaded == 5) {
-                $alphaLinks.addClass("disabled").off("click");
-            }
+                pokemonLoaded++;
+                if (pokemonLoaded == 5) {
+                    $alphaLinks.addClass("disabled").off("click");
+                }
+
+                ToggleHighlight($that);
+            });
 
         });
 
@@ -92,8 +103,11 @@ $(function () {
 
     // Handle the visual representation of selecting a link
     function ToggleHighlight(which) {
-        $("#AlphaLinks").find("a.highlight").removeClass("highlight");
-        $(which).addClass("highlight");
+        if ($("#AlphaLinks").find("a.highlight")[0] === which[0]) {
+            $(which).removeClass("highlight");
+        } else {
+            $("#AlphaLinks").find("a.highlight").removeClass("highlight");
+            $(which).addClass("highlight");
+        }
     }
-
 });

@@ -31,8 +31,8 @@ window.loggingLevel = loggingLevels.OutputOnly;
     // Use extend to attach plugin code to window.PokeApi via local variable PokeApi
     $.extend(PokeApi, {
 
-        apiUrl: "http://pokeapi.co/",
-        pokeDexUri: "api/v1/pokedex/1/",
+        apiUrl: "http://pokeapi.co",
+        pokeDexUri: "/api/v1/pokedex/1/",
         failedToLoadData: false,
         failedToLoadJson: false,
         pokeData: [],
@@ -164,22 +164,49 @@ window.loggingLevel = loggingLevels.OutputOnly;
                 return false;
             }
 
+            if (pokemon.resource_uri.substr(0, 1) != "/") {
+                pokemon.resource_uri = "/" + pokemon.resource_uri;
+            }
+
             $.get(PokeApi.apiUrl + pokemon.resource_uri, function (data) {
 
-                var callbacks =$.Callbacks();
-                callbacks.add(complete);
+                    // Store the callback ready to fire after data is retrieved
+                    var callbacks = $.Callbacks();
+                    callbacks.add(complete);
 
-                // Check we actually got something usable
-                LogToConsole("Verifying data...", loggingLevels.Verbose);
-                if (data.abilities == undefined || data.abilities.length <= 0) {
-                    // Call fail method to alert user
-                    PokeApi.ajaxFailed();
+                    // Check we actually got something usable
+                    LogToConsole("Verifying data...", loggingLevels.Verbose);
+                    if (data.abilities == undefined || data.abilities.length <= 0) {
+
+                        // Call fail method to alert user
+                        PokeApi.ajaxFailed();
+                    }
+
+                    // fallback sprite url
+                    var spriteUrl = "question.png";
+
+                    // 'get' for the sprite url (if there is one in data)
+                    if (data.sprites.length > 0) {
+                        $.get(PokeApi.apiUrl + data.sprites[0].resource_uri, function (spriteData) {
+                            spriteUrl = PokeApi.apiUrl + spriteData.image;
+                        })
+                            .done(returnData);
+                    }
+                    else {
+                        returnData();
+                    }
+
+                    function returnData() {
+                        // Merge in the extended data (whether or not the sprite 'get' succeeded)
+                        jQuery.extend(true, pokemon, data, {sprite: spriteUrl});
+
+                        // Fire the callback method
+                        callbacks.fireWith(window, data);
+                    }
                 }
-
-                // TODO: Work out why data isn't received in the 'complete' method
-                callbacks.fireWith(window, data);
-            })
-                .fail(function () {
+            )
+                .
+                fail(function () {
                     // Call fail method to alert user
                     PokeApi.ajaxFailed();
                 })
@@ -210,11 +237,13 @@ window.loggingLevel = loggingLevels.OutputOnly;
             //        alert("Verbs file is missing or corrupted");
             //    });
 
-            // WebStorm development web server won't serve json file, have included below instead
+            // WebStorm IDE's development web server doesn't seem to won't to serve a json file, have included below instead
             // TODO: find another way to serve json from local file system
             PokeApi.verbFileJson = verbsFileContents;
             PokeApi.failedToLoadJson = false;
-        },
+        }
+
+        ,
 
         getVerbAndAdjective: function (name) {
 
