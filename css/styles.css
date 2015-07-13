@@ -25,10 +25,15 @@ html {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 0; }
+    z-index: 0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#cbccc8)) fixed; }
     html body H1 {
-      position: absolute;
-      top: 0; }
+      font-family: pretendo, sans-serif;
+      font-size: 3rem;
+      color: #444;
+      letter-spacing: 2px;
+      text-shadow: 0 4px 4px RGBA(155, 155, 155, 0.6);
+      padding-left: 20px; }
     html body button {
       font-family: 'Pretendo', sans-serif;
       border-radius: 100px;
@@ -160,6 +165,24 @@ html {
     transform: rotate3d(1, 0, 0, 15deg);
     box-shadow: inset 0 0 60px #885, 0 15px 40px -3px RGBA(0, 0, 10, 0.5);
     z-index: 10; }
+    html #Board #Instructions {
+      position: absolute;
+      width: 100%;
+      top: 35%;
+      display: block;
+      text-align: center;
+      font-family: pretendo, sans-serif;
+      font-size: 4rem;
+      color: #ddd;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 2px RGBA(0, 0, 0, 0.7);
+      padding-left: 20px;
+      transition: all 500ms ease-in;
+      z-index: 1; }
+      html #Board #Instructions.faded {
+        opacity: 0;
+        text-shadow: 0 0 0 RGBA(0, 0, 0, 0);
+        margin-top: 3px; }
     html #Board .card {
       opacity: 0;
       display: inline-block;
@@ -213,6 +236,7 @@ html {
       html #Board .card .sprite {
         width: 100px;
         background: white;
+        background: repeating-radial-gradient(#eef, #b8e7bf 5px, white 5px, white 10px);
         border: 1px solid #333;
         position: absolute;
         margin-top: -30%;
@@ -248,10 +272,12 @@ html {
           top: 0;
           background: linear-gradient(#eee, #fff, #eee); }
           html #Board .card .details .name-plate-main .adj-verb {
-            font-size: 1.3rem;
-            line-height: 1.3rem; }
+            font-size: 1.1rem;
+            line-height: 1.0rem; }
           html #Board .card .details .name-plate-main .title {
-            font-size: 2rem; }
+            font-size: 1.6rem;
+            line-height: 2.3rem;
+            overflow: hidden; }
         html #Board .card .details dt {
           display: inline-block;
           width: 60px;

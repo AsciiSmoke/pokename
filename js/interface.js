@@ -38,8 +38,14 @@ $(function () {
 	function bindLinks() {
 
 		var pokemonLoaded = 0;
+        var instructionsHidden = false;
 
 		$("#AlphaLinks").find("a").click(function () {
+
+            if (!instructionsHidden){
+                instructionsHidden = true;
+                $("#Instructions").addClass("faded");
+            }
 
 			if (window.PokeApi == undefined) {
 				alert("Sorry, an error has occurred, please refresh your page and try again.");
