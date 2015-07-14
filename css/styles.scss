@@ -55,6 +55,39 @@ html {
       padding-left: 20px;
     }
 
+    #CardHistory {
+      display: inline-block;
+      position: absolute;
+      top: 600px;
+      left: 55px;
+      height: 14px;
+      width: 102px;
+      font-family: pretendo, sans-serif;
+      font-size: 1.23rem;
+      white-space: nowrap;
+      letter-spacing: 2px;
+      color: #35f;
+      text-shadow: -2px 4px 5px RGBA(55, 55, 55, 0.5);
+      border-bottom: 1px solid #35f;
+      box-shadow: -2px 8px 10px -3px RGBA(55, 55, 55, 0.2);
+      transform: rotateY(30deg) rotateZ(2deg) scaleX(0.8) scaleY(1.2);
+      transform-origin: 50% 50%;
+      cursor: pointer;
+      margin-top: 0;
+      margin-bottom: 2px;
+
+      &:hover {
+        color: #f33;
+        border-bottom-color: #f33;
+        text-shadow: -2px 4px 5px RGBA(55, 55, 55, 0.2);
+      }
+
+      &:active {
+        margin-top: 2px;
+        margin-bottom: 0;
+      }
+    }
+
     button {
       font-family: 'Pretendo', sans-serif;
       border-radius: 100px;
