@@ -4,6 +4,14 @@
 
 $(function () {
 
+    // Quick and simple scaling based on an ideal size of 1600px
+    function scaleDocument() {
+        // TODO: make items scale better for tablets and mobiles
+        $("html").css("zoom", $(window).innerWidth() / 1600);
+    }
+
+    $(window).on("resize", scaleDocument);
+
     // Create 4 additional card elements from the template
     var $cardTemplate = $("article[data-name='template']");
     for (var i = 0; i < 4; i++) {
@@ -27,6 +35,12 @@ $(function () {
                 $continueButton.removeClass("disabled").addClass("ready").fadeOut(200, function () {
                     $(this).text("Continue").click(function () {
                         $("#MessageWindow").hide();
+
+                        // Hide the welcome message, it is no longer needed
+                        $("#WelcomeMessage").hide();
+
+                        // Un-hide the history table ready for when the user clicks the history button
+                        $("#HistoryTable").show();
                     });
                 }).fadeIn(200);
             }
@@ -129,14 +143,43 @@ $(function () {
 
             // Store the updated array
             localStorage.setItem("SavedPokemon", JSON.stringify(existingSavedRecords));
-
-            //// Test
-            //debugger;
-            //var retrievedObject = localStorage.getItem("SavedPokemon");
         }
     }
 
-    // Handle the visual representation of selecting a link
+    function RetrieveLocal() {
+        if (typeof(Storage) != "undefined") {
+
+            // Get SavedPokemon from storage
+            var existingSavedRecords = localStorage.getItem("SavedPokemon");
+
+            // If there was nothing in storage, initialise a new array
+            if (!existingSavedRecords || existingSavedRecords == "null") {
+                return;
+            }
+
+            var table = $("#HistoryTable");
+            var template = $("#TemplateRow");
+
+            existingSavedRecords = JSON.parse(existingSavedRecords);
+            $(existingSavedRecords.pokemon).each(function () {
+
+                var record = $(this);
+                var newRow = template.clone(false);
+
+                // Bind data to the row
+                $(newRow).find("td[data-field]").each(function () {
+                    var field = $(this).attr("data-field");
+                    $(this).text(record[field]);
+                });
+
+                // Add the row to the table and un-hide it
+                newRow.appendTo(table).show();
+            })
+
+        }
+    }
+
+    // Highlight a clicked button until the data is retrieved
     function ToggleHighlight(which) {
         var highlighted = $("#AlphaLinks").find("a.highlight");
         if (highlighted[0] === which[0]) {
@@ -147,4 +190,6 @@ $(function () {
             $(which).addClass("highlight");
         }
     }
+
+    RetrieveLocal();
 });

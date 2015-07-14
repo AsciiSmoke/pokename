@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>PokeName</title>
     <meta name="description" content="PokéName - The Pokémon-themed version name generator">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -16,17 +16,54 @@
     <div class="message-window-backdrop"></div>
     <div class="message-window-container">
         <div class="message-window">
-            <h2 class="message-title">Welcome to PokeName</h2>
 
-            <div class="message-text">
-                <p>Please select up to 5 characters using the alphabetical links on the left-hand side of the board.</p>
+            <div id="WelcomeMessage">
+                <h2 class="message-title">Welcome to PokeName</h2>
 
-                <p>Your randomly selected Pokémon characters will then be loaded into your deck.</p>
+                <div class="message-text">
+                    <p>Please select up to 5 characters using the alphabetical links on the left-hand side of the
+                        board.</p>
+
+                    <p>Your randomly selected Pokémon characters will then be loaded into your deck.</p>
+                </div>
+            </div>
+
+            <div id="HistoryTableWrapper">
+                <div id="HistoryTableScroll">
+
+                    <table id="HistoryTable">
+                        <thead>
+                        <tr>
+                            <th data-field="name">Name</th>
+                            <th data-field="attack">Attack</th>
+                            <th data-field="defense">Defense</th>
+                            <th data-field="height">Height</th>
+                            <th data-field="weight">Weight</th>
+                            <th>- copy / del -</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="TemplateRow">
+                            <td data-field="name"></td>
+                            <td data-field="attack"></td>
+                            <td data-field="defense"></td>
+                            <td data-field="height"></td>
+                            <td data-field="weight"></td>
+                            <td>
+                                <button data-use="copy" class="ready" title="Copy to your clipboard">copy</button>
+                                <button data-use="delete" class="ready" title="Remove from your card history">del</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
             </div>
 
             <button class="message-button disabled">Loading<span>...</span></button>
         </div>
     </div>
+
 </aside>
 
 <main>
@@ -90,6 +127,8 @@
         </article>
     </section>
 </main>
+
+
 </body>
 </html>
 

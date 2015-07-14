@@ -3,30 +3,11 @@
   src: url('Pretendo.ttf');
 }
 
+@-ms-viewport {
+  width: device-width;
+}
+
 html {
-
-  // Super-simple responsive adjusments
-  @media screen and (max-width: 480px) {
-    zoom: 0.275;
-
-    #MessageWindow .message-window-container {
-      font-size: 3em;
-    }
-  }
-  @media screen and (min-width: 481px) and (max-width: 800px) {
-    zoom: 0.45;
-
-    #MessageWindow .message-window-container {
-      //zoom: 1.5;
-    }
-  }
-  @media screen and (min-width: 801px) and (max-width: 1024px) {
-    zoom: 0.575;
-
-    #MessageWindow .message-window-container {
-      //zoom: 2;
-    }
-  }
 
   font-size: 62.5%; // Equivalent of 10px
 
@@ -96,8 +77,11 @@ html {
       background: white;
       padding: 6px 20px;
       box-shadow: 0 7px 10px -5px #77F;
-      font-size: 1.3em;
+      font-size: 1.4em;
       margin-bottom: 4px;
+      margin-top: 0;
+      height: 40px;
+      position: relative;
 
       span {
         font-family: verdana, sans-serif;
@@ -113,8 +97,7 @@ html {
         }
 
         &:active {
-          margin-bottom: 0;
-          margin-top: 4px;
+          top: 4px;
           box-shadow: 0 3px 10px -5px #77F;
         }
       }
@@ -168,7 +151,111 @@ html {
         .message-text {
           margin-bottom: 40px;
         }
+
+        #WelcomeMessage {
+          display: none;
+        }
+
+        #HistoryTableWrapper {
+          position: relative;
+          margin-top: 50px;
+
+          #HistoryTableScroll {
+            &::-webkit-scrollbar {
+              width: 12px;
+              height: 12px;
+            }
+            &::-webkit-scrollbar-button {
+              display: none;
+            }
+            &::-webkit-scrollbar-track-piece {
+              background: transparent;
+            }
+            &::-webkit-scrollbar-thumb {
+              -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+              border-radius: 10px;
+            }
+          }
+
+          #HistoryTableScroll {
+            width: 1000px;
+            max-height: 350px;
+            overflow: auto;
+
+            #HistoryTable {
+              //display: none;
+              border-style: hidden !important;
+
+              thead, tbody {
+                width: 1000px;
+
+                th, td {
+                  padding: 10px 20px;
+                  text-align: left;
+                  border-style: solid;
+                  border-color: #bbb;
+                  border-width: 0 1px 1px 0;
+                  color: #333;
+                  display: inline-block;
+                  height: 50px;
+                  width: 123px;
+                  overflow: hidden;
+
+                  &[data-field="name"] {
+                    width: 300px;
+                  }
+
+                  &:last-child {
+                    width: 190px;
+                    color: #999;
+                    font-weight: normal;
+                    border-right-width: 0;
+                    text-align: center;
+                  }
+                }
+              }
+
+              thead {
+                position: absolute;
+                top: 0;
+                transform: translateY(-100%);
+                z-index: 2;
+              }
+
+              thead tr th {
+                text-align: center;
+
+                &:first-child {
+                  text-align: left;
+                }
+              }
+
+              tbody tr td {
+                font-size: 9px;
+              }
+
+              #TemplateRow {
+                display: none;
+              }
+
+              button {
+                margin: 0 5%;
+                font-family: sans-serif;
+                font-weight: bold;
+                font-size: 1rem;
+                width: 35%;
+                height: 30px;
+                padding: 0;
+                text-align: center;
+              }
+            }
+          }
+        }
       }
+    }
+
+    .message-button {
+      margin-top: 20px;
     }
   }
 
