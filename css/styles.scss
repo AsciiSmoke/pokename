@@ -36,7 +36,7 @@ html {
       padding-left: 20px;
     }
 
-    #CardHistory {
+    #CardHistoryLink {
       display: inline-block;
       position: absolute;
       top: 600px;
@@ -82,6 +82,7 @@ html {
       margin-top: 0;
       height: 40px;
       position: relative;
+      outline: 0;
 
       span {
         font-family: verdana, sans-serif;
@@ -152,11 +153,8 @@ html {
           margin-bottom: 40px;
         }
 
-        #WelcomeMessage {
-          display: none;
-        }
-
         #HistoryTableWrapper {
+          display: none;
           position: relative;
           margin-top: 50px;
 
@@ -183,15 +181,21 @@ html {
             overflow: auto;
 
             #HistoryTable {
-              //display: none;
               border-style: hidden !important;
 
               thead, tbody {
                 width: 1000px;
 
+                tr:nth-child(even) {
+                  background: RGBA(0, 0, 0, 0.05);
+                }
+
+                tr:nth-child(1) {
+                  background: RGBA(0, 0, 0, 0.15);
+                }
+
                 th, td {
                   padding: 10px 20px;
-                  text-align: left;
                   border-style: solid;
                   border-color: #bbb;
                   border-width: 0 1px 1px 0;
@@ -200,9 +204,15 @@ html {
                   height: 50px;
                   width: 123px;
                   overflow: hidden;
+                  text-align: center;
 
-                  &[data-field="name"] {
+                  &[data-field] {
+                    padding-top: 15px;
+                  }
+
+                  &:first-child {
                     width: 300px;
+                    text-align: left;
                   }
 
                   &:last-child {
@@ -220,18 +230,10 @@ html {
                 top: 0;
                 transform: translateY(-100%);
                 z-index: 2;
-              }
 
-              thead tr th {
-                text-align: center;
-
-                &:first-child {
-                  text-align: left;
+                th:last-child {
+                  padding-top: 15px;
                 }
-              }
-
-              tbody tr td {
-                font-size: 9px;
               }
 
               #TemplateRow {

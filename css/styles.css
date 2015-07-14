@@ -25,7 +25,7 @@ html {
       letter-spacing: 2px;
       text-shadow: 0 4px 4px RGBA(155, 155, 155, 0.6);
       padding-left: 20px; }
-    html body #CardHistory {
+    html body #CardHistoryLink {
       display: inline-block;
       position: absolute;
       top: 600px;
@@ -45,11 +45,11 @@ html {
       cursor: pointer;
       margin-top: 0;
       margin-bottom: 2px; }
-      html body #CardHistory:hover {
+      html body #CardHistoryLink:hover {
         color: #f33;
         border-bottom-color: #f33;
         text-shadow: -2px 4px 5px RGBA(55, 55, 55, 0.2); }
-      html body #CardHistory:active {
+      html body #CardHistoryLink:active {
         margin-top: 2px;
         margin-bottom: 0; }
     html body button {
@@ -64,7 +64,8 @@ html {
       margin-bottom: 4px;
       margin-top: 0;
       height: 40px;
-      position: relative; }
+      position: relative;
+      outline: 0; }
       html body button span {
         font-family: verdana, sans-serif; }
       html body button.disabled {
@@ -110,9 +111,8 @@ html {
       padding: 20px 50px; }
       html #MessageWindow .message-window-container .message-window .message-text {
         margin-bottom: 40px; }
-      html #MessageWindow .message-window-container .message-window #WelcomeMessage {
-        display: none; }
       html #MessageWindow .message-window-container .message-window #HistoryTableWrapper {
+        display: none;
         position: relative;
         margin-top: 50px; }
         html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll::-webkit-scrollbar {
@@ -133,9 +133,12 @@ html {
             border-style: hidden !important; }
             html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead, html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable tbody {
               width: 1000px; }
+              html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead tr:nth-child(even), html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable tbody tr:nth-child(even) {
+                background: RGBA(0, 0, 0, 0.05); }
+              html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead tr:nth-child(1), html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable tbody tr:nth-child(1) {
+                background: RGBA(0, 0, 0, 0.15); }
               html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead th, html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead td, html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable tbody th, html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable tbody td {
                 padding: 10px 20px;
-                text-align: left;
                 border-style: solid;
                 border-color: #bbb;
                 border-width: 0 1px 1px 0;
@@ -143,9 +146,13 @@ html {
                 display: inline-block;
                 height: 50px;
                 width: 123px;
-                overflow: hidden; }
-                html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead th[data-field="name"], html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead td[data-field="name"], html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable tbody th[data-field="name"], html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable tbody td[data-field="name"] {
-                  width: 300px; }
+                overflow: hidden;
+                text-align: center; }
+                html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead th[data-field], html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead td[data-field], html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable tbody th[data-field], html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable tbody td[data-field] {
+                  padding-top: 15px; }
+                html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead th:first-child, html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead td:first-child, html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable tbody th:first-child, html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable tbody td:first-child {
+                  width: 300px;
+                  text-align: left; }
                 html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead th:last-child, html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead td:last-child, html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable tbody th:last-child, html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable tbody td:last-child {
                   width: 190px;
                   color: #999;
@@ -157,12 +164,8 @@ html {
               top: 0;
               transform: translateY(-100%);
               z-index: 2; }
-            html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead tr th {
-              text-align: center; }
-              html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead tr th:first-child {
-                text-align: left; }
-            html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable tbody tr td {
-              font-size: 9px; }
+              html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable thead th:last-child {
+                padding-top: 15px; }
             html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable #TemplateRow {
               display: none; }
             html #MessageWindow .message-window-container .message-window #HistoryTableWrapper #HistoryTableScroll #HistoryTable button {

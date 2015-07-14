@@ -43,8 +43,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr id="TemplateRow">
-                            <td data-field="name"></td>
+                        <tr id="TemplateRow" data-key="name">
+                            <td>
+                                <span data-field="adjective"></span> <span data-field="verb"></span> <span data-field="name"></span>
+                            </td>
                             <td data-field="attack"></td>
                             <td data-field="defense"></td>
                             <td data-field="height"></td>
@@ -99,7 +101,7 @@
         <a data-char="?">?</a>
     </nav>
 
-    <a id="CardHistory">Card History</a>
+    <a id="CardHistoryLink">Card History</a>
 
     <section id="Board">
         <article class="card" data-name="template" data-uri="">

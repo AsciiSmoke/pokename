@@ -10,6 +10,7 @@ $(function () {
         $("html").css("zoom", $(window).innerWidth() / 1600);
     }
 
+    // Bind the resize function to window.resize
     $(window).on("resize", scaleDocument);
 
     // Create 4 additional card elements from the template
@@ -40,7 +41,7 @@ $(function () {
                         $("#WelcomeMessage").hide();
 
                         // Un-hide the history table ready for when the user clicks the history button
-                        $("#HistoryTable").show();
+                        $("#HistoryTableWrapper").show();
                     });
                 }).fadeIn(200);
             }
@@ -110,7 +111,7 @@ $(function () {
                 $card.find(".details dd[data-field='attack']").text(newPokemon.attack);
                 $card.find(".details dd[data-field='defense']").text(newPokemon.defense);
 
-                StoreLocally(newPokemon);
+                storeLocally(newPokemon);
 
                 pokemonLoaded++;
                 if (pokemonLoaded == 5) {
@@ -125,7 +126,7 @@ $(function () {
         return true;
     }
 
-    function StoreLocally(pokedata) {
+    function storeLocally(pokedata) {
         if (typeof(Storage) != "undefined") {
 
             // Get SavedPokemon from storage
@@ -136,17 +137,69 @@ $(function () {
                 existingSavedRecords = '{"pokemon": []}';
             }
 
+            // Parse the json into an array
             existingSavedRecords = JSON.parse(existingSavedRecords);
 
-            // Push the new record into the array
-            existingSavedRecords.pokemon.push(pokedata);
+            // Find the record in the storage array
+            var match = findRecordInData(pokedata.name, existingSavedRecords.pokemon);
 
-            // Store the updated array
-            localStorage.setItem("SavedPokemon", JSON.stringify(existingSavedRecords));
+            // Make sure that the store doesn't already have the record
+            if (match.length == 0) {
+                // Push the new record into the array
+                existingSavedRecords.pokemon.push(pokedata);
+
+                // Store the updated array (only if it's actually changed)
+                localStorage.setItem("SavedPokemon", JSON.stringify(existingSavedRecords));
+            }
         }
     }
 
-    function RetrieveLocal() {
+
+    function deleteRowFromHistory() {
+        if (typeof(Storage) != "undefined") {
+
+            // Get SavedPokemon from storage
+            var existingSavedRecords = localStorage.getItem("SavedPokemon");
+
+            // If there was nothing in storage, initialise a new array
+            if (!existingSavedRecords || existingSavedRecords == "null") {
+                existingSavedRecords = '{"pokemon": []}';
+            }
+
+            // Parse the json into an array
+            existingSavedRecords = JSON.parse(existingSavedRecords);
+
+            // Find the record in the storage array
+            var match = findRecordInData(pokedata.name, existingSavedRecords.pokemon);
+
+            // splice the new record out of the array
+            var index = existingSavedRecords.pokemon.indexOf(match);
+            if (index != -1) {
+                existingSavedRecords.pokemon.splice(index, 1);
+            }
+
+            // Store the updated array
+            localStorage.setItem("SavedPokemon", JSON.stringify(existingSavedRecords));
+
+            // Redraw the table
+            // TODO: it would be more efficient to juggle the array in memory rather than return to the disk each time
+            retrieveLocal();
+        }
+    }
+
+
+    // Find the record in the storage array
+    function findRecordInData(name, data) {
+        // INFO: Had to use a filter array.indexOf didn't match
+        return data.filter(function (record) {
+            return (
+                record.name == name
+            )
+        });
+    }
+
+
+    function retrieveLocal() {
         if (typeof(Storage) != "undefined") {
 
             // Get SavedPokemon from storage
@@ -163,21 +216,55 @@ $(function () {
             existingSavedRecords = JSON.parse(existingSavedRecords);
             $(existingSavedRecords.pokemon).each(function () {
 
-                var record = $(this);
-                var newRow = template.clone(false);
+                var record = this;
+                var newRow = template.clone(false).removeAttr("id");
 
                 // Bind data to the row
-                $(newRow).find("td[data-field]").each(function () {
+                $(newRow).find("[data-field]").each(function () {
                     var field = $(this).attr("data-field");
                     $(this).text(record[field]);
                 });
 
                 // Add the row to the table and un-hide it
                 newRow.appendTo(table).show();
-            })
+            });
 
+            table.find("button[data-use='copy']").click(copyToClipBoard);
+            table.find("button[data-use='delete']").click(deleteRowFromHistory);
         }
     }
+
+
+    function copyToClipBoard() {
+        // Remove all ranges before starting
+        window.getSelection().removeAllRanges();
+
+        // Create document selection range
+        var range = document.createRange();
+        range.selectNode($(this).closest("tr").find("td:first")[0]);
+
+        // Use getSelection on the range
+        window.getSelection().addRange(range);
+
+        try {
+            // Execute the copy command
+            if (document.execCommand('copy')) {
+                // Remove all ranges before starting
+                window.getSelection().removeAllRanges();
+                alert("Copied!")
+            } else {
+                reportCopyFail();
+            }
+        } catch (err) {
+            reportCopyFail();
+        }
+
+        function reportCopyFail() {
+            alert("Sorry, your browser does not seem to support the copy feature");
+        }
+
+    }
+
 
     // Highlight a clicked button until the data is retrieved
     function ToggleHighlight(which) {
@@ -191,5 +278,10 @@ $(function () {
         }
     }
 
-    RetrieveLocal();
+    retrieveLocal();
+    scaleDocument();
+
+    $("#CardHistoryLink").click(function () {
+        $("#MessageWindow").show();
+    });
 });
