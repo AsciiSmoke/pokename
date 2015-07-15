@@ -4,7 +4,7 @@
 
 $(function () {
 
-    // Quick and simple scaling based on an ideal size of 1600px
+    // Quick and simple scaling based on an ideal width of 1600px
     function scaleDocument() {
         // TODO: make items scale better for tablets and mobiles
         $("html").css("zoom", $(window).innerWidth() / 1600);
@@ -225,6 +225,9 @@ $(function () {
     }
 
 
+    // TODO: Move local storage functions into a separate js file like the API
+
+
     /// Gets / sets local storage into array
     function localCardHistory(updatedHistory) {
         if (typeof(Storage) != "undefined") {
@@ -337,6 +340,10 @@ $(function () {
     function deleteRowFromHistory() {
         if (typeof(Storage) != "undefined") {
 
+            if (!confirm("Are you sure you wish to delete this record?")) {
+                return false;
+            }
+
             // Get the name of the pokemon from the clicked row
             var name = $(this).closest("tr").attr("data-key");
 
@@ -346,9 +353,13 @@ $(function () {
             // Find the record in the storage array
             var match = findRecordInData(name, existingSavedRecords.pokemon);
 
-            // TODO: manually iterate over existingSavedRecords, for some reason, indexOf doesn't work with complex objects
+            if (match.length == 0) {
+                alert("Sorry, something went wrong and the delete failed");
+                return false;
+            }
+
             // Splice the new record out of the array
-            var index = existingSavedRecords.pokemon.indexOf(match);
+            var index = existingSavedRecords.pokemon.indexOf(match[0]);
             if (index != -1) {
                 existingSavedRecords.pokemon.splice(index, 1);
             }
