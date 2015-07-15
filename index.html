@@ -28,37 +28,46 @@
                 </div>
             </div>
 
-            <div id="HistoryTableWrapper">
-                <div id="HistoryTableScroll">
+            <div id="HistoryTableContainer">
+                <h2 id="HistoryTitle">Pokémon card draw history.</h2>
 
-                    <table id="HistoryTable">
-                        <thead>
-                        <tr>
-                            <th data-field="name">Name</th>
-                            <th data-field="attack">Attack</th>
-                            <th data-field="defense">Defense</th>
-                            <th data-field="height">Height</th>
-                            <th data-field="weight">Weight</th>
-                            <th>- copy / del -</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id="TemplateRow" data-key="name">
-                            <td>
-                                <span data-field="adjective"></span> <span data-field="verb"></span> <span data-field="name"></span>
-                            </td>
-                            <td data-field="attack"></td>
-                            <td data-field="defense"></td>
-                            <td data-field="height"></td>
-                            <td data-field="weight"></td>
-                            <td>
-                                <button data-use="copy" class="ready" title="Copy to your clipboard">copy</button>
-                                <button data-use="delete" class="ready" title="Remove from your card history">del</button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div id="HistoryTableWrapper">
+                    <div id="HistoryTableScroll">
 
+                        <table id="HistoryTable">
+                            <thead>
+                            <tr>
+                                <th data-field="name">Name</th>
+                                <th data-field="attack">Attack</th>
+                                <th data-field="defense">Defense</th>
+                                <th data-field="height">Height</th>
+                                <th data-field="weight">Weight</th>
+                                <th>- copy / del -</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="TemplateRow" data-key="name">
+                                <td>
+                                    <span data-field="adjective"></span> <span data-field="verb"></span> <span data-field="name"></span>
+                                </td>
+                                <td data-field="attack"></td>
+                                <td data-field="defense"></td>
+                                <td data-field="height"></td>
+                                <td data-field="weight"></td>
+                                <td>
+                                    <button data-use="copy" class="ready" title="Copy to your clipboard">copy</button>
+                                    <button data-use="delete" class="ready" title="Remove from your card history">del</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+                <div id="NoHistoryMsg">
+                    <h4>You have not yet stored any Pokémon cards.</h4>
+                    Click 'Continue' and start choosing letters!
                 </div>
             </div>
 

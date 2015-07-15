@@ -41,13 +41,14 @@ $(function () {
                         $("#WelcomeMessage").hide();
 
                         // Un-hide the history table ready for when the user clicks the history button
-                        $("#HistoryTableWrapper").show();
+                        $("#HistoryTableContainer").show();
                     });
                 }).fadeIn(200);
             }
 
         });
     }
+
 
     // Bind the click event for the buttons
     function bindLinks() {
@@ -100,6 +101,7 @@ $(function () {
                 return false;
             }
 
+            // Get extended details of pokemon from the API
             PokeApi.getDetails(newPokemon, function () {
                 var $card = $("#Board").find("article:eq(" + pokemonLoaded + ")").addClass("visible");
                 $card.find(".name-plate-side").text(newPokemon.name);
@@ -126,19 +128,103 @@ $(function () {
         return true;
     }
 
+
+    /// Highlight a clicked button until the data is retrieved
+    function ToggleHighlight(which) {
+        var highlighted = $("#AlphaLinks").find("a.highlight");
+        if (highlighted[0] === which[0]) {
+            $(which).removeClass("highlight");
+        }
+        else {
+            $(highlighted).removeClass("highlight");
+            $(which).addClass("highlight");
+        }
+    }
+
+
+    /// Render history to table
+    function renderHistoryTable() {
+
+        // prep table and template
+        var table = $("#HistoryTable");
+        var template = $("#TemplateRow");
+
+
+        // Get records
+        var existingSavedRecords = localCardHistory();
+
+        // Toggle visibility of message / table
+        if (existingSavedRecords.pokemon.length == 0) {
+            $("#HistoryTableWrapper").hide();
+            $("#NoHistoryMsg").show();
+        }
+        else {
+            $("#HistoryTableWrapper").show();
+            $("#NoHistoryMsg").hide();
+        }
+
+        // Remove the old rows
+        table.find("tbody tr").not("#TemplateRow").remove();
+
+        // iterate / populate
+        $(existingSavedRecords.pokemon).each(function () {
+
+            var record = this;
+            var newRow = template.clone(false).removeAttr("id");
+
+            // Bind data to the row
+            $(newRow).find("[data-field]").each(function () {
+                var field = $(this).attr("data-field");
+                $(this).text(record[field]);
+            });
+
+            // Add the row to the table and un-hide it
+            newRow.appendTo(table).show();
+        });
+
+        // Bind actions
+        table.find("button[data-use='copy']").click(copyToClipBoard);
+        table.find("button[data-use='delete']").click(deleteRowFromHistory);
+    }
+
+
+    /// Gets / sets local storage into array
+    function localCardHistory(value) {
+        if (typeof(Storage) != "undefined") {
+
+            // TODO: implement in-memory 'var' cache instead of returning to disk each time
+
+            // If a value is supplied the local storage is being updated
+            if (value) {
+                localStorage.setItem("SavedPokemon", JSON.stringify(value));
+                return value;
+            } else {
+
+                // Get SavedPokemon from storage
+                var existingSavedRecords = localStorage.getItem("SavedPokemon");
+
+                // If there is a stored value, return it
+                if (existingSavedRecords) {
+                    return JSON.parse(existingSavedRecords);
+                } else {
+                    // If there was nothing in storage, initialise a new array
+                    existingSavedRecords = JSON.parse('{"pokemon": []}');
+
+                    // Store and return empty array
+                    return localCardHistory(existingSavedRecords);
+                }
+
+            }
+        }
+    }
+
+
+    /// Stores the given pokemon record in the local storage array
     function storeLocally(pokedata) {
         if (typeof(Storage) != "undefined") {
 
-            // Get SavedPokemon from storage
-            var existingSavedRecords = localStorage.getItem("SavedPokemon");
-
-            // If there was nothing in storage, initialise a new array
-            if (!existingSavedRecords || existingSavedRecords == "null") {
-                existingSavedRecords = '{"pokemon": []}';
-            }
-
             // Parse the json into an array
-            existingSavedRecords = JSON.parse(existingSavedRecords);
+            var existingSavedRecords = localCardHistory();
 
             // Find the record in the storage array
             var match = findRecordInData(pokedata.name, existingSavedRecords.pokemon);
@@ -149,22 +235,21 @@ $(function () {
                 existingSavedRecords.pokemon.push(pokedata);
 
                 // Store the updated array (only if it's actually changed)
-                localStorage.setItem("SavedPokemon", JSON.stringify(existingSavedRecords));
+                localCardHistory(existingSavedRecords);
             }
         }
+
+        // TODO: Rather than re-build the entire table, just insert the new row
+        renderHistoryTable();
     }
 
 
-    function deleteRowFromHistory() {
+    /// Removes the given pokemon record from the local storage array
+    function deleteRowFromHistory(pokedata) {
         if (typeof(Storage) != "undefined") {
 
             // Get SavedPokemon from storage
-            var existingSavedRecords = localStorage.getItem("SavedPokemon");
-
-            // If there was nothing in storage, initialise a new array
-            if (!existingSavedRecords || existingSavedRecords == "null") {
-                existingSavedRecords = '{"pokemon": []}';
-            }
+            var existingSavedRecords = localCardHistory();
 
             // Parse the json into an array
             existingSavedRecords = JSON.parse(existingSavedRecords);
@@ -172,23 +257,22 @@ $(function () {
             // Find the record in the storage array
             var match = findRecordInData(pokedata.name, existingSavedRecords.pokemon);
 
-            // splice the new record out of the array
+            // Splice the new record out of the array
             var index = existingSavedRecords.pokemon.indexOf(match);
             if (index != -1) {
                 existingSavedRecords.pokemon.splice(index, 1);
             }
 
             // Store the updated array
-            localStorage.setItem("SavedPokemon", JSON.stringify(existingSavedRecords));
+            localCardHistory(existingSavedRecords);
 
             // Redraw the table
-            // TODO: it would be more efficient to juggle the array in memory rather than return to the disk each time
-            retrieveLocal();
+            renderHistoryTable();
         }
     }
 
 
-    // Find the record in the storage array
+    /// Find the record in the  array
     function findRecordInData(name, data) {
         // INFO: Had to use a filter array.indexOf didn't match
         return data.filter(function (record) {
@@ -199,44 +283,10 @@ $(function () {
     }
 
 
-    function retrieveLocal() {
-        if (typeof(Storage) != "undefined") {
-
-            // Get SavedPokemon from storage
-            var existingSavedRecords = localStorage.getItem("SavedPokemon");
-
-            // If there was nothing in storage, initialise a new array
-            if (!existingSavedRecords || existingSavedRecords == "null") {
-                return;
-            }
-
-            var table = $("#HistoryTable");
-            var template = $("#TemplateRow");
-
-            existingSavedRecords = JSON.parse(existingSavedRecords);
-            $(existingSavedRecords.pokemon).each(function () {
-
-                var record = this;
-                var newRow = template.clone(false).removeAttr("id");
-
-                // Bind data to the row
-                $(newRow).find("[data-field]").each(function () {
-                    var field = $(this).attr("data-field");
-                    $(this).text(record[field]);
-                });
-
-                // Add the row to the table and un-hide it
-                newRow.appendTo(table).show();
-            });
-
-            table.find("button[data-use='copy']").click(copyToClipBoard);
-            table.find("button[data-use='delete']").click(deleteRowFromHistory);
-        }
-    }
-
-
+    /// Copy the name from the clicked row to the clipboard
     function copyToClipBoard() {
-        // Remove all ranges before starting
+
+        // Remove all selection ranges before starting
         window.getSelection().removeAllRanges();
 
         // Create document selection range
@@ -251,6 +301,8 @@ $(function () {
             if (document.execCommand('copy')) {
                 // Remove all ranges before starting
                 window.getSelection().removeAllRanges();
+
+                //TODO: use something nicer than an alert for reporting expected actions
                 alert("Copied!")
             } else {
                 reportCopyFail();
@@ -265,20 +317,7 @@ $(function () {
 
     }
 
-
-    // Highlight a clicked button until the data is retrieved
-    function ToggleHighlight(which) {
-        var highlighted = $("#AlphaLinks").find("a.highlight");
-        if (highlighted[0] === which[0]) {
-            $(which).removeClass("highlight");
-        }
-        else {
-            $(highlighted).removeClass("highlight");
-            $(which).addClass("highlight");
-        }
-    }
-
-    retrieveLocal();
+    renderHistoryTable();
     scaleDocument();
 
     $("#CardHistoryLink").click(function () {
