@@ -172,11 +172,48 @@ $(function () {
             var record = this;
             var newRow = template.clone(false).removeAttr("id");
 
-            // Bind data to the row
+            // Template row defines the key field in an attribute called 'data-key'
+            // TODO: Use something truly unique for a key instead of just the name field
+            var key = newRow.attr("data-key");
+            newRow.attr("data-key", record.name);
+
+            // Bind data-field data to the row
             $(newRow).find("[data-field]").each(function () {
                 var field = $(this).attr("data-field");
-                $(this).text(record[field]);
+
+                // Check record has a corresponding field
+                if (record[field]) {
+                    $(this).text(record[field]);
+                }
             });
+
+            // Bind composite-field data to the row
+            $(newRow).find("[data-comsposite-field]").each(function () {
+
+                var element = this;
+                var outputValue = "";
+                var compositeParts = $(this).attr("data-comsposite-field").split(",");
+
+                // Iterate through the composite part values in the field to build an output value
+                $(compositeParts).each(function () {
+                    var part = this;
+
+                    // Check if the part is a string literal
+                    var partLength = part.length;
+                    if (part.substr(0, 1) == "'" && part.substr(partLength - 1, 1) == "'") {
+                        // Strip off the apostrophes
+                        outputValue += part.substr(1, partLength - 2);
+                    } else {
+                        // Attempt to find a corresponding field in the record
+                        if (record[part]) {
+                            outputValue += record[part];
+                        }
+                    }
+                });
+
+                $(element).text(outputValue);
+            });
+
 
             // Add the row to the table and un-hide it
             newRow.appendTo(table).show();
@@ -189,15 +226,22 @@ $(function () {
 
 
     /// Gets / sets local storage into array
-    function localCardHistory(value) {
+    function localCardHistory(updatedHistory) {
         if (typeof(Storage) != "undefined") {
 
             // TODO: implement in-memory 'var' cache instead of returning to disk each time
 
             // If a value is supplied the local storage is being updated
-            if (value) {
-                localStorage.setItem("SavedPokemon", JSON.stringify(value));
-                return value;
+            if (updatedHistory) {
+
+                // Store the updated history
+                localStorage.setItem("SavedPokemon", JSON.stringify(updatedHistory));
+
+                // Redraw the table
+                // TODO: Rather than re-build the entire table, just insert the new row
+                renderHistoryTable();
+
+                return updatedHistory;
             } else {
 
                 // Get SavedPokemon from storage
@@ -238,25 +282,71 @@ $(function () {
                 localCardHistory(existingSavedRecords);
             }
         }
+    }
 
-        // TODO: Rather than re-build the entire table, just insert the new row
-        renderHistoryTable();
+
+    /// Copy the name from the clicked row to the clipboard
+    function copyToClipBoard() {
+
+        var button = this;
+
+        // Remove all selection ranges before starting
+        window.getSelection().removeAllRanges();
+
+        var nameElement = $(this).closest("tr").find(".name-cell");
+
+        if (nameElement.length == 0) {
+            alert("Sorry, something went wrong and the copy failed\r\n\r\nplease highlight the name and use Ctrl+C / Command + C");
+            return false;
+        }
+
+        // Create document selection range
+        var range = document.createRange();
+        range.selectNode(nameElement[0]);
+
+        // Use getSelection on the range
+        window.getSelection().addRange(range);
+
+        try {
+            // Execute the copy command
+            if (document.execCommand('copy')) {
+                // Remove all ranges before starting
+                window.getSelection().removeAllRanges();
+
+                // Reset all buttons to read 'copy'
+                $("button[data-use='copy']").text("copy");
+
+                // Update this button to read 'copied!' and flash
+                $(button).delay(300).fadeOut(200, function () {
+                    $(this).text("copied!");
+                }).fadeIn(200);
+            } else {
+                reportCopyFail();
+            }
+        } catch (err) {
+            reportCopyFail();
+        }
+
+        function reportCopyFail() {
+            alert("Sorry, your browser does not seem to support the copy feature");
+        }
     }
 
 
     /// Removes the given pokemon record from the local storage array
-    function deleteRowFromHistory(pokedata) {
+    function deleteRowFromHistory() {
         if (typeof(Storage) != "undefined") {
+
+            // Get the name of the pokemon from the clicked row
+            var name = $(this).closest("tr").attr("data-key");
 
             // Get SavedPokemon from storage
             var existingSavedRecords = localCardHistory();
 
-            // Parse the json into an array
-            existingSavedRecords = JSON.parse(existingSavedRecords);
-
             // Find the record in the storage array
-            var match = findRecordInData(pokedata.name, existingSavedRecords.pokemon);
+            var match = findRecordInData(name, existingSavedRecords.pokemon);
 
+            // TODO: manually iterate over existingSavedRecords, for some reason, indexOf doesn't work with complex objects
             // Splice the new record out of the array
             var index = existingSavedRecords.pokemon.indexOf(match);
             if (index != -1) {
@@ -265,9 +355,6 @@ $(function () {
 
             // Store the updated array
             localCardHistory(existingSavedRecords);
-
-            // Redraw the table
-            renderHistoryTable();
         }
     }
 
@@ -280,41 +367,6 @@ $(function () {
                 record.name == name
             )
         });
-    }
-
-
-    /// Copy the name from the clicked row to the clipboard
-    function copyToClipBoard() {
-
-        // Remove all selection ranges before starting
-        window.getSelection().removeAllRanges();
-
-        // Create document selection range
-        var range = document.createRange();
-        range.selectNode($(this).closest("tr").find("td:first")[0]);
-
-        // Use getSelection on the range
-        window.getSelection().addRange(range);
-
-        try {
-            // Execute the copy command
-            if (document.execCommand('copy')) {
-                // Remove all ranges before starting
-                window.getSelection().removeAllRanges();
-
-                //TODO: use something nicer than an alert for reporting expected actions
-                alert("Copied!")
-            } else {
-                reportCopyFail();
-            }
-        } catch (err) {
-            reportCopyFail();
-        }
-
-        function reportCopyFail() {
-            alert("Sorry, your browser does not seem to support the copy feature");
-        }
-
     }
 
     renderHistoryTable();
