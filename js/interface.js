@@ -108,10 +108,10 @@ $(function () {
                 $card.find(".name-plate-main .adj-verb").text(newPokemon.adjective + " " + newPokemon.verb);
                 $card.find(".name-plate-main .title").text(newPokemon.name);
                 $card.find(".sprite img").attr("src", newPokemon.sprite);
-                $card.find(".details dd[data-field='height']").text(newPokemon.height);
-                $card.find(".details dd[data-field='weight']").text(newPokemon.weight);
-                $card.find(".details dd[data-field='attack']").text(newPokemon.attack);
-                $card.find(".details dd[data-field='defense']").text(newPokemon.defense);
+                $card.find(".details dd[data-field='height']").text(newPokemon.moreData.height);
+                $card.find(".details dd[data-field='weight']").text(newPokemon.moreData.weight);
+                $card.find(".details dd[data-field='abilities']").text(newPokemon.moreData.abilities.length);
+                $card.find(".details dd[data-field='moves']").text(newPokemon.moreData.moves.length);
 
                 storeLocally(newPokemon);
 
