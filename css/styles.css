@@ -371,7 +371,8 @@ html {
             font-size: 1.6rem;
             line-height: 2.3rem;
             overflow: hidden;
-            margin: 0 5px; }
+            margin: 0 5px;
+			text-transform: capitalize; }
         html #Board .card .details dt {
           display: inline-block;
           width: 60px;
