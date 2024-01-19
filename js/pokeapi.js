@@ -31,8 +31,8 @@ window.loggingLevel = loggingLevels.Alerts;
     // Use extend to attach plugin code to window.PokeApi via local variable PokeApi
     $.extend(PokeApi, {
 
-        apiUrl: "http://pokeapi.co",
-        pokeDexUri: "/api/v1/pokedex/1/",
+        apiUrl: "https://pokeapi.co",
+        pokeDexUri: "/api/v2/pokedex/1/",
         failedToLoadData: false,
         failedToLoadJson: false,
         _pokeData: [],
@@ -77,14 +77,14 @@ window.loggingLevel = loggingLevels.Alerts;
 
                 // Check we actually got something usable
                 LogToConsole("Verifying data...", loggingLevels.Verbose);
-                if (data.pokemon == undefined || data.pokemon.length <= 0) {
+                if (data.pokemon_entries == undefined || data.pokemon_entries.length <= 0) {
                     // Call fail method to alert user
                     PokeApi.ajaxFailed();
                 }
 
                 // Sort and store the data in an object level variable for safe-keeping
                 LogToConsole("Sorting and storing data...", loggingLevels.Verbose);
-                PokeApi.pokeData(PokeApi.sortData(data.pokemon));
+                PokeApi.pokeData(PokeApi.sortData(data.pokemon_entries));
             })
                 .fail(function () {
 
@@ -135,11 +135,11 @@ window.loggingLevel = loggingLevels.Alerts;
             // Create a shortlist by filtering down to the first character and ignoring any previously returned pokemon
             var filteredShortList = PokeApi.pokeData().filter(function (poke) {
                 return (
-                    poke.name.substr(0, 1).toLowerCase() == char
+                    poke.pokemon_species.name.substr(0, 1).toLowerCase() == char
                     &&
                     PokeApi.displayedPokemon.filter(function (dispPoke) {
                         return (
-                            dispPoke.name == poke.name
+                            dispPoke.name == poke.pokemon_species.name
                         )
                     }).length == 0
                 );
@@ -153,7 +153,7 @@ window.loggingLevel = loggingLevels.Alerts;
 
                 // Randomly select a Pokemon from the shortlist
                 var randomSelector = Math.round(Math.random() * (shortlistCount - 1));
-                var pokeToReturn = filteredShortList[randomSelector];
+                var pokeToReturn = filteredShortList[randomSelector].pokemon_species;
                 pokeToReturn.name = pokeToReturn.name.capFirst();
 
                 // Retrieve a verb and an adjective
@@ -176,18 +176,13 @@ window.loggingLevel = loggingLevels.Alerts;
             LogToConsole("Retrieving pokemon details...", loggingLevels.Verbose);
 
             // Check the record has the required uri
-            if (!pokemon.resource_uri) {
+            if (!pokemon.url) {
                 LogToConsole("Invalid pokemon object supplied", loggingLevels.Verbose);
                 return false;
             }
 
-            // Some records start with a slash some don't
-            if (pokemon.resource_uri.substr(0, 1) != "/") {
-                pokemon.resource_uri = "/" + pokemon.resource_uri;
-            }
-
             // Query the api
-            $.get(PokeApi.apiUrl + pokemon.resource_uri, function (data) {
+            $.get(pokemon.url, function (data) {
 
                     // Store the callback ready to fire after data is retrieved
                     var callbacks = $.Callbacks();
@@ -195,46 +190,32 @@ window.loggingLevel = loggingLevels.Alerts;
 
                     // Check we actually got something usable
                     LogToConsole("Verifying data...", loggingLevels.Verbose);
-                    if (data.abilities == undefined || data.abilities.length <= 0) {
+                    if (data.id == undefined) {
 
                         // Call fail method to alert user
                         PokeApi.ajaxFailed();
                     }
+					
+					$.get("https://pokeapi.co/api/v2/pokemon/" + data.id, function (moreData){
+						var spriteUrl = moreData.sprites.front_default || "question.png";
+						jQuery.extend(true, pokemon, data, {sprite: spriteUrl});
+						jQuery.extend(true, pokemon, data, {moreData});
 
-                    // fallback sprite url
-                    var spriteUrl = "question.png";
-
-                    // 'get' for the sprite url (if there is one in data)
-                    if (data.sprites.length > 0) {
-                        $.get(PokeApi.apiUrl + data.sprites[0].resource_uri, function (spriteData) {
-                            spriteUrl = PokeApi.apiUrl + spriteData.image;
-                        })
-                            .done(returnData);
-                    }
-                    else {
-                        returnData();
-                    }
-
-                    function returnData() {
-                        // Merge in the extended data (whether or not the sprite 'get' succeeded)
-                        jQuery.extend(true, pokemon, data, {sprite: spriteUrl});
-
-                        // Fire the callback method
-                        callbacks.fireWith(window, data);
-                    }
+						// Fire the callback method
+						callbacks.fireWith(window, data);
+					});
                 }
             )
-                .
-                fail(function () {
-                    // Call fail method to alert user
-                    PokeApi.ajaxFailed();
-                })
-                .done(function () {
-                    // Reset failedToLoadData flag in case it had previously failed
-                    if (PokeApi.pokeData() != undefined) {
-                        PokeApi.failedToLoadData = false;
-                    }
-                });
+			.fail(function () {
+				// Call fail method to alert user
+				PokeApi.ajaxFailed();
+			})
+			.done(function () {
+				// Reset failedToLoadData flag in case it had previously failed
+				if (PokeApi.pokeData() != undefined) {
+					PokeApi.failedToLoadData = false;
+				}
+			});
 
             // In case anything has failed, return false
             return false;
